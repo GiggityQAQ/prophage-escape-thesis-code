@@ -1,2 +1,154 @@
-# prophage-escape-thesis-code
-Description: Julia code for the thesis "A Modeling Study of Prophage Escape under Periodic Antibiotic Pressure" 
+# Prophage Escape Thesis Code
+
+This repository contains the Julia source code used for the thesis:
+
+**A Modeling Study of Prophage Escape under Periodic Antibiotic Pressure**
+
+## Overview
+
+This project implements deterministic ordinary differential equation models of temperate phage and bacterial host dynamics under periodic antibiotic exposure.
+
+The thesis compares two model variants:
+
+* **Model A: Baseline model**
+  All prophages have the same basal induction rate. No antibiotic-induced prophage escape is included.
+
+* **Model B: Escape model**
+  ARG-negative prophages increase their induction rate during antibiotic exposure.
+
+The scripts in this repository reproduce the main computational results shown in Chapter 3 of the thesis.
+
+## Repository structure
+
+```text
+prophage-escape-thesis-code/
+├── README.md
+├── Project.toml
+├── Manifest.toml
+├── .gitignore
+├── scripts/
+│   ├── modelA_phase_diagram.jl
+│   ├── modelB_phase_diagram.jl
+│   ├── modelB_timeseries.jl
+│   └── modelB_dominant_lysogen_global_check.jl
+├── figures/
+└── results/
+```
+
+## Scripts and thesis figures
+
+| Thesis figure | Script                                            | Description                                                                               |
+| ------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Figure 3.1    | `scripts/modelA_phase_diagram.jl`                 | Generates the Model A baseline phase diagram.                                             |
+| Figure 3.2    | `scripts/modelB_phase_diagram.jl`                 | Generates the Model B lysogen persistence-combination phase diagram.                      |
+| Figure 3.3    | `scripts/modelB_timeseries.jl`                    | Generates the Model B representative time-series plot for `T_on = 600` and `T_off = 100`. |
+| Figure 3.4    | `scripts/modelB_timeseries.jl`                    | Generates the Model B representative time-series plot for `T_on = 600` and `T_off = 900`. |
+| Figure 3.5    | `scripts/modelB_dominant_lysogen_global_check.jl` | Generates the rapid global check of the dominant lysogen type in Model B.                 |
+
+## Requirements
+
+The code was written in Julia.
+
+Main Julia packages:
+
+* `DifferentialEquations.jl`
+* `Plots.jl`
+* `Colors.jl`
+* `Measures.jl`
+
+The scripts also use Julia standard libraries such as `Statistics` and `Printf`.
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/prophage-escape-thesis-code.git
+cd prophage-escape-thesis-code
+```
+
+Start Julia using the project environment:
+
+```bash
+julia --project=.
+```
+
+Then instantiate the environment:
+
+```julia
+using Pkg
+Pkg.instantiate()
+```
+
+If the environment has not yet been created, install the required packages:
+
+```julia
+using Pkg
+Pkg.add(["DifferentialEquations", "Plots", "Colors", "Measures"])
+```
+
+## Running the scripts
+
+Run Model A phase diagram:
+
+```bash
+julia --project=. scripts/modelA_phase_diagram.jl
+```
+
+Run Model B lysogen persistence-combination phase diagram:
+
+```bash
+julia --project=. scripts/modelB_phase_diagram.jl
+```
+
+Run Model B representative time-series simulations:
+
+```bash
+julia --project=. scripts/modelB_timeseries.jl
+```
+
+Run Model B dominant lysogen global check:
+
+```bash
+julia --project=. scripts/modelB_dominant_lysogen_global_check.jl
+```
+
+## Expected outputs
+
+The scripts generate the following main outputs:
+
+| Script                                    | Main output                                              |
+| ----------------------------------------- | -------------------------------------------------------- |
+| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_axes_fixed.png`        |
+| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_labels_plot_order.csv` |
+| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_labels_long.csv`       |
+| `modelB_phase_diagram.jl`                 | `modelB_phase_lysogen_presence_by_test.png`              |
+| `modelB_timeseries.jl`                    | `modelB_timeseries_fixed200_masked_Ton_600_Toff_100.png` |
+| `modelB_timeseries.jl`                    | `modelB_timeseries_fixed200_masked_Ton_600_Toff_900.png` |
+| `modelB_dominant_lysogen_global_check.jl` | `modelB_phase_dominant_lysogen_type_by_test_square.png`  |
+
+## Notes on parameter scans
+
+The default scan uses:
+
+```julia
+T_on_values  = 10.0:80.0:1200.0
+T_off_values = 10.0:80.0:1200.0
+```
+
+Some scripts include comments for a higher-resolution scan:
+
+```julia
+T_on_values  = 10.0:10.0:1200.0
+T_off_values = 10.0:10.0:1200.0
+```
+
+The higher-resolution scan is more computationally expensive and is not used as the default setting.
+
+## Author
+
+Zichang Li
+
+## Thesis
+
+Zichang Li. *A Modeling Study of Prophage Escape under Periodic Antibiotic Pressure*. 2026.
