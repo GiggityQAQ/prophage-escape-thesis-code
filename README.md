@@ -6,17 +6,17 @@ This repository contains the Julia source code used for the thesis:
 
 ## Overview
 
-This project implements deterministic ordinary differential equation models of temperate phage and bacterial host dynamics under periodic antibiotic exposure.
+This project implements deterministic ordinary differential equation models of temperate phage and bacterial host population dynamics under periodic antibiotic exposure.
 
 The thesis compares two model variants:
 
 * **Model A: Baseline model**
-  All prophages have the same basal induction rate. No antibiotic-induced prophage escape is included.
+  All prophages have the same basal induction rate. Antibiotic exposure affects sensitive cells through antibiotic-mediated death, but does not increase prophage induction.
 
 * **Model B: Escape model**
-  ARG-negative prophages increase their induction rate during antibiotic exposure.
+  ARG-negative prophages increase their induction rate during antibiotic exposure, while ARG-positive prophages keep the basal induction rate.
 
-The scripts in this repository reproduce the main computational results shown in Chapter 3 of the thesis.
+The scripts reproduce the five main computational figures reported in Chapter 3 of the thesis.
 
 ## Repository structure
 
@@ -25,7 +25,6 @@ prophage-escape-thesis-code/
 ├── README.md
 ├── Project.toml
 ├── Manifest.toml
-├── .gitignore
 ├── scripts/
 │   ├── modelA_phase_diagram.jl
 │   ├── modelB_phase_diagram.jl
@@ -37,13 +36,13 @@ prophage-escape-thesis-code/
 
 ## Scripts and thesis figures
 
-| Thesis figure | Script                                            | Description                                                                               |
-| ------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Figure 3.1    | `scripts/modelA_phase_diagram.jl`                 | Generates the Model A baseline phase diagram.                                             |
-| Figure 3.2    | `scripts/modelB_phase_diagram.jl`                 | Generates the Model B lysogen persistence-combination phase diagram.                      |
-| Figure 3.3    | `scripts/modelB_timeseries.jl`                    | Generates the Model B representative time-series plot for `T_on = 600` and `T_off = 100`. |
-| Figure 3.4    | `scripts/modelB_timeseries.jl`                    | Generates the Model B representative time-series plot for `T_on = 600` and `T_off = 900`. |
-| Figure 3.5    | `scripts/modelB_dominant_lysogen_global_check.jl` | Generates the rapid global check of the dominant lysogen type in Model B.                 |
+| Thesis figure | Script                                            | Main output                                             | Description                                                                                                               |
+| ------------- | ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Figure 3.1    | `scripts/modelA_phase_diagram.jl`                 | `modelA_phase_SPC_dominant_square.png`                  | Generates the Model A baseline phase diagram using the SPC dominant-attractor classification.                             |
+| Figure 3.2    | `scripts/modelB_phase_diagram.jl`                 | `modelB_phase_lysogen_presence_by_test_square.png`      | Generates the Model B lysogen-presence phase diagram, recording which lysogen types persist in the final analysis window. |
+| Figure 3.3    | `scripts/modelB_timeseries.jl`                    | `modelB_timeseries_Ton_600_Toff_100.png`                | Generates the Model B representative time-series simulation for `T_on = 600` and `T_off = 100`.                           |
+| Figure 3.4    | `scripts/modelB_timeseries.jl`                    | `modelB_timeseries_Ton_600_Toff_900.png`                | Generates the Model B representative time-series simulation for `T_on = 600` and `T_off = 900`.                           |
+| Figure 3.5    | `scripts/modelB_dominant_lysogen_global_check.jl` | `modelB_phase_dominant_lysogen_type_by_test_square.png` | Generates the simplified Model B dominant-lysogen global check phase diagram.                                             |
 
 ## Requirements
 
@@ -56,7 +55,10 @@ Main Julia packages:
 * `Colors.jl`
 * `Measures.jl`
 
-The scripts also use Julia standard libraries such as `Statistics` and `Printf`.
+The scripts also use Julia standard libraries such as:
+
+* `Statistics`
+* `Printf`
 
 ## Installation
 
@@ -80,7 +82,7 @@ using Pkg
 Pkg.instantiate()
 ```
 
-If the environment has not yet been created, install the required packages:
+If the project environment has not yet been created, install the required packages:
 
 ```julia
 using Pkg
@@ -89,25 +91,25 @@ Pkg.add(["DifferentialEquations", "Plots", "Colors", "Measures"])
 
 ## Running the scripts
 
-Run Model A phase diagram:
+Run the Model A baseline phase diagram:
 
 ```bash
 julia --project=. scripts/modelA_phase_diagram.jl
 ```
 
-Run Model B lysogen persistence-combination phase diagram:
+Run the Model B lysogen-presence phase diagram:
 
 ```bash
 julia --project=. scripts/modelB_phase_diagram.jl
 ```
 
-Run Model B representative time-series simulations:
+Run the Model B representative time-series simulations:
 
 ```bash
 julia --project=. scripts/modelB_timeseries.jl
 ```
 
-Run Model B dominant lysogen global check:
+Run the Model B dominant-lysogen global check:
 
 ```bash
 julia --project=. scripts/modelB_dominant_lysogen_global_check.jl
@@ -115,35 +117,37 @@ julia --project=. scripts/modelB_dominant_lysogen_global_check.jl
 
 ## Expected outputs
 
-The scripts generate the following main outputs:
+The scripts generate the following main figure files:
 
-| Script                                    | Main output                                              |
-| ----------------------------------------- | -------------------------------------------------------- |
-| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_axes_fixed.png`        |
-| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_labels_plot_order.csv` |
-| `modelA_phase_diagram.jl`                 | `modelA_phase_LysogenCombinations_labels_long.csv`       |
-| `modelB_phase_diagram.jl`                 | `modelB_phase_lysogen_presence_by_test.png`              |
-| `modelB_timeseries.jl`                    | `modelB_timeseries_fixed200_masked_Ton_600_Toff_100.png` |
-| `modelB_timeseries.jl`                    | `modelB_timeseries_fixed200_masked_Ton_600_Toff_900.png` |
-| `modelB_dominant_lysogen_global_check.jl` | `modelB_phase_dominant_lysogen_type_by_test_square.png`  |
+| Output file                                             | Generated by                                      | Thesis figure |
+| ------------------------------------------------------- | ------------------------------------------------- | ------------- |
+| `modelA_phase_SPC_dominant_square.png`                  | `scripts/modelA_phase_diagram.jl`                 | Figure 3.1    |
+| `modelB_phase_lysogen_presence_by_test_square.png`      | `scripts/modelB_phase_diagram.jl`                 | Figure 3.2    |
+| `modelB_timeseries_Ton_600_Toff_100.png`                | `scripts/modelB_timeseries.jl`                    | Figure 3.3    |
+| `modelB_timeseries_Ton_600_Toff_900.png`                | `scripts/modelB_timeseries.jl`                    | Figure 3.4    |
+| `modelB_phase_dominant_lysogen_type_by_test_square.png` | `scripts/modelB_dominant_lysogen_global_check.jl` | Figure 3.5    |
 
-## Notes on parameter scans
+## Parameter scan settings
 
-The default scan uses:
+The phase-diagram scripts use the following default parameter grid:
 
 ```julia
 T_on_values  = 10.0:80.0:1200.0
 T_off_values = 10.0:80.0:1200.0
 ```
 
-Some scripts include comments for a higher-resolution scan:
+Some scripts include commented settings for a higher-resolution scan:
 
 ```julia
 T_on_values  = 10.0:10.0:1200.0
 T_off_values = 10.0:10.0:1200.0
 ```
 
-The higher-resolution scan is more computationally expensive and is not used as the default setting.
+The higher-resolution scan is computationally more expensive and is not used as the default setting.
+
+## Notes
+
+The output files are generated by running the scripts. Depending on repository size limits and submission requirements, generated figures may either be included in the `figures/` folder or regenerated from the scripts.
 
 ## Author
 
