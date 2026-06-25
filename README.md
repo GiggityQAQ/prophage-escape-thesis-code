@@ -33,33 +33,22 @@ Resident-based tests first run the resident community until convergence. After i
 ```text
 prophage-escape-thesis-code/
 ├── README.md
-├── Project.toml
-├── Manifest.toml
-├── scripts/
-│   ├── modelA_phase_diagram.jl
-│   ├── modelB_phase_diagram.jl
-│   ├── modelB_timeseries.jl
-│   └── modelB_dominant_lysogen_check.jl
-├── figures/
-│   ├── 3.1.pdf
-│   ├── 3.2.pdf
-│   ├── 3.3.pdf
-│   ├── 3.4.pdf
-│   └── 3.5.pdf
-└── results/
+└── ODE/
+    ├── modelA_phase_diagram.jl
+    ├── modelB_phase_diagram.jl
+    ├── modelB_timeseries.jl
+    └── modelB_dominant_lysogen_check.jl
 ```
-
-`Project.toml` and `Manifest.toml` are recommended for reproducibility. If they are not included, the required packages can be installed manually as described below.
 
 ## Scripts and thesis figures
 
-| Thesis figure | Figure file       | Source script                              | Main generated output                                   | Description                                                                                                                                                                     |
-| ------------- | ----------------- | ------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Figure 3.1    | `figures/3.1.pdf` | `scripts/modelA_phase_diagram.jl`          | `modelA_phase_SPC_dominant_square.png`                  | Generates the Model A baseline phase diagram. This figure tests whether ARG location alone produces a consistent long-term outcome in the absence of antibiotic-induced escape. |
-| Figure 3.2    | `figures/3.2.pdf` | `scripts/modelB_phase_diagram.jl`          | `modelB_phase_lysogen_presence_by_test_square.png`      | Generates the Model B lysogen persistence-combination phase diagram. This figure records which lysogen types remain present in the final analysis window.                       |
-| Figure 3.3    | `figures/3.3.pdf` | `scripts/modelB_timeseries.jl`             | `modelB_timeseries_Ton_600_Toff_100.png`                | Generates the representative Model B time-series simulation for `T_on = 600` and `T_off = 100` under the `DirectPC` initial condition.                                          |
-| Figure 3.4    | `figures/3.4.pdf` | `scripts/modelB_timeseries.jl`             | `modelB_timeseries_Ton_600_Toff_900.png`                | Generates the representative Model B time-series simulation for `T_on = 600` and `T_off = 900` under the `DirectPC` initial condition.                                          |
-| Figure 3.5    | `figures/3.5.pdf` | `scripts/modelB_dominant_lysogen_check.jl` | `modelB_phase_dominant_lysogen_type_by_test_square.png` | Generates the simplified Model B dominant-lysogen global check phase diagram. This figure records only the single dominant lysogen type for each run.                           |
+| Thesis figure | Source script                          | Main generated output                                   | Description                                                                                                                                                                     |
+| ------------- | -------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Figure 3.1    | `ODE/modelA_phase_diagram.jl`          | `modelA_phase_SPC_dominant_square.png`                  | Generates the Model A baseline phase diagram. This figure tests whether ARG location alone produces a consistent long-term outcome in the absence of antibiotic-induced escape. |
+| Figure 3.2    | `ODE/modelB_phase_diagram.jl`          | `modelB_phase_lysogen_presence_by_test_square.png`      | Generates the Model B lysogen persistence-combination phase diagram. This figure records which lysogen types remain present in the final analysis window.                       |
+| Figure 3.3    | `ODE/modelB_timeseries.jl`             | `modelB_timeseries_Ton_600_Toff_100.png`                | Generates the representative Model B time-series simulation for `T_on = 600` and `T_off = 100` under the `DirectPC` initial condition.                                          |
+| Figure 3.4    | `ODE/modelB_timeseries.jl`             | `modelB_timeseries_Ton_600_Toff_900.png`                | Generates the representative Model B time-series simulation for `T_on = 600` and `T_off = 900` under the `DirectPC` initial condition.                                          |
+| Figure 3.5    | `ODE/modelB_dominant_lysogen_check.jl` | `modelB_phase_dominant_lysogen_type_by_test_square.png` | Generates the simplified Model B dominant-lysogen global check phase diagram. This figure records only the single dominant lysogen type for each run.                           |
 
 ## Requirements
 
@@ -85,20 +74,7 @@ git clone https://github.com/GiggityQAQ/prophage-escape-thesis-code.git
 cd prophage-escape-thesis-code
 ```
 
-Start Julia using the project environment:
-
-```bash
-julia --project=.
-```
-
-If `Project.toml` and `Manifest.toml` are included, instantiate the environment inside Julia:
-
-```julia
-using Pkg
-Pkg.instantiate()
-```
-
-If the environment has not been created yet, install the required packages manually:
+Install the required packages in Julia:
 
 ```julia
 using Pkg
@@ -112,40 +88,40 @@ All commands should be run from the root directory of the repository.
 Run the Model A baseline phase diagram:
 
 ```bash
-julia --project=. scripts/modelA_phase_diagram.jl
+julia ODE/modelA_phase_diagram.jl
 ```
 
 Run the Model B lysogen persistence-combination phase diagram:
 
 ```bash
-julia --project=. scripts/modelB_phase_diagram.jl
+julia ODE/modelB_phase_diagram.jl
 ```
 
 Run the Model B representative time-series simulations:
 
 ```bash
-julia --project=. scripts/modelB_timeseries.jl
+julia ODE/modelB_timeseries.jl
 ```
 
 Run the Model B dominant-lysogen global check:
 
 ```bash
-julia --project=. scripts/modelB_dominant_lysogen_check.jl
+julia ODE/modelB_dominant_lysogen_check.jl
 ```
 
 ## Expected outputs
 
 The scripts generate the following main output files:
 
-| Output file                                             | Generated by                               | Thesis figure |
-| ------------------------------------------------------- | ------------------------------------------ | ------------- |
-| `modelA_phase_SPC_dominant_square.png`                  | `scripts/modelA_phase_diagram.jl`          | Figure 3.1    |
-| `modelB_phase_lysogen_presence_by_test_square.png`      | `scripts/modelB_phase_diagram.jl`          | Figure 3.2    |
-| `modelB_timeseries_Ton_600_Toff_100.png`                | `scripts/modelB_timeseries.jl`             | Figure 3.3    |
-| `modelB_timeseries_Ton_600_Toff_900.png`                | `scripts/modelB_timeseries.jl`             | Figure 3.4    |
-| `modelB_phase_dominant_lysogen_type_by_test_square.png` | `scripts/modelB_dominant_lysogen_check.jl` | Figure 3.5    |
+| Output file                                             | Generated by                           | Thesis figure |
+| ------------------------------------------------------- | -------------------------------------- | ------------- |
+| `modelA_phase_SPC_dominant_square.png`                  | `ODE/modelA_phase_diagram.jl`          | Figure 3.1    |
+| `modelB_phase_lysogen_presence_by_test_square.png`      | `ODE/modelB_phase_diagram.jl`          | Figure 3.2    |
+| `modelB_timeseries_Ton_600_Toff_100.png`                | `ODE/modelB_timeseries.jl`             | Figure 3.3    |
+| `modelB_timeseries_Ton_600_Toff_900.png`                | `ODE/modelB_timeseries.jl`             | Figure 3.4    |
+| `modelB_phase_dominant_lysogen_type_by_test_square.png` | `ODE/modelB_dominant_lysogen_check.jl` | Figure 3.5    |
 
-By default, the scripts save generated figures to the working directory from which the commands are run. The final thesis-ready versions of the figures can be stored in the `figures/` folder.
+By default, the scripts save generated figures to the working directory from which the commands are run.
 
 ## Parameter scan settings
 
